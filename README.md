@@ -3,7 +3,7 @@ Bu uygulama öğrencilerin tahtayı kurcalamasını engellemek içindir.
 
 Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 4.3.2) ve pip sürümünün çok eski olmasından dolayı çalışmadı.(Çalışan bir sürüm ayarlamaya çalışıyorum ama olumlu bir sonuç çıkacak gibi gözükmüyor.5.3’te Ebaqr çalışsa bile normal qr çalışmıyor.)
 
-#Özellikleri:
+# Özellikleri:
 -İnternet var iken ebaqr aktif olur.
 
 -Ebaqr okutulduğunda kilit açılır.(Yalnızca öğretmen hesabı ebaqr’ı okuttuysa)
@@ -24,7 +24,13 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 4.3.2)
 
 -Masaüstündeki simge ile kilit başlatılabilir.
 
-#Todo:
+# Todo:
 
 -İnternet yokken ki gelen qr koda daha iyi bir çözüm bulmak(Öğrencilerin açamaması için)
+
+# Görseller:
+
+<img src="https://i.hizliresim.com/m4yrx97.png" alt="Landing page" height="270px">
+<img src="https://i.hizliresim.com/7lvi0xs.png" alt="Landing page" height="270px">
+<img src="https://i.hizliresim.com/dy1n9eu.png" alt="Landing page" height="270px">
 
