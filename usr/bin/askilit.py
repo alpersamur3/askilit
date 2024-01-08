@@ -1,0 +1,455 @@
+import gi
+import random
+try:
+    import qrcode
+except:
+    import os
+    os.system("pip3 install qrcode")
+    import qrcode
+import json
+import base64
+import sys
+#gi.require_version('WebKit2', '4.0')
+from gi.repository import Gtk, WebKit2,Gio,Gdk,GdkPixbuf
+
+class FullScreenWebViewExample:
+    
+    def __init__(self):
+        self.stpt=True
+        self.durum=None
+        self.lock="askilit.lock"
+        self.strt = sys.argv[1] if len(sys.argv) > 1 else None
+        self.asoft="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"
+        # Ana pencereyi oluştur
+        self.window = Gtk.Window()
+        self.window.connect('destroy', self.ex)
+        self.window.set_default_size(800, 600)
+        self.window.fullscreen()
+        self.window.connect("key-press-event",self.on_key_press)
+        self.ext=False
+        self.cikacak=False
+
+        self.window.set_property("skip-taskbar-hint", True)
+        self.window.set_decorated(False)
+        self.window.set_type_hint(Gdk.WindowTypeHint.DIALOG)
+
+        # Pencereyi her zaman en üstte tut
+        self.window.set_keep_above(True)
+
+        #birden fazla çalıştırmayı engelle
+        if self.strt==None:
+            try:
+                with open(self.lock, "r+") as dosya:
+                    self.lck = dosya.read()
+                    dosya.close()
+            except:
+                self.lck=""
+            if self.lck=="":
+                with open(self.lock, "w") as dosya:
+                    dosya.write("lock")
+                    dosya.close()
+            else:
+                self.ext=True
+                self.cikacak=True
+                #self.window.destroy()
+                import threading
+                thread = threading.Thread(target=self.cik)
+                thread.start()
+        else:
+            try:
+                with open(self.lock, "r+") as dosya:
+                    self.lck = dosya.read()
+                    dosya.close()
+            except:
+                self.lck=""
+            if self.lck=="":
+                with open(self.lock, "w") as dosya:
+                    dosya.write("lock")
+                    dosya.close()
+        self.setlock()
+        import threading
+        thread = threading.Thread(target=self.autoex)
+        thread.start()
+        # Kullanıcı adı ve öğretmen kontrolü
+        self.username = "teacher"
+        self.is_teacher = True
+
+        # Giriş ekranını oluştur
+        self.qr_image = Gtk.Image()
+
+        # Web görünümü oluştur
+        self.webview = WebKit2.WebView()
+        self.webview.connect("button-press-event", self.on_webview_button_press)
+        self.webview.connect("scroll-event", self.on_webview_scroll)
+        self.webview.connect("load-changed",self.load_event)
+        
+        self.base_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        
+        label = Gtk.Label(label="Alper Samur\ntarafından\ngeliştirildi\n(alpersamur0705@gmail.com)")
+        image = Gtk.Image()
+        image_data = base64.b64decode(self.asoft)
+        self.pixbuf = GdkPixbuf.PixbufLoader.new_with_type('png')
+        self.pixbuf.write(image_data)
+        self.pixbuf = self.pixbuf.get_pixbuf()
+        self.pixbuf = self.pixbuf.scale_simple(100, 100, GdkPixbuf.InterpType.BILINEAR)
+
+        image.set_from_pixbuf(self.pixbuf)
+        image.set_size_request(70,70)
+        image_box = Gtk.EventBox()
+        image_box.add(image)
+
+        self.poweroff_button = Gtk.Button(label="Tahtayı Kapat")
+        self.poweroff_button.connect("clicked", self.poweroff)
+        self.poweroff_button.set_size_request(30, 30) 
+
+        self.restart_button = Gtk.Button(label="Tahtayı Yeniden Başlat")
+        self.restart_button.connect("clicked", self.reboot)
+        self.restart_button.set_size_request(30, 30)
+
+        self.cik_button = Gtk.Button(label="Oturumu Kapat")
+        self.cik_button.connect("clicked", self.cikis)
+        self.cik_button.set_size_request(30, 30)
+
+        self.base_box.pack_start(label, True, True, 0)
+        self.base_box.pack_start(image_box, True, True, 0)
+        self.base_box.pack_start(self.poweroff_button, True, True, 0)
+        self.base_box.pack_start(self.restart_button, True, True, 0)
+        self.base_box.pack_start(self.cik_button, True, True, 0)
+
+        self.base_box.set_size_request(-1, 10)
+
+        # Buton oluştur
+        self.show_webview_button = Gtk.Button(label="Eba Qr Yenile")
+        self.show_webview_button.connect("clicked", self.toggle_webview)
+        self.show_webview_button.set_size_request(100, 30)  # Buton boyutunu ayarla
+
+        # QR Kodunu gösteren etiket
+        
+
+        # Minik kutu (Box) oluştur
+        self.vbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+
+        # Giriş ekranını ve butonu ekle
+        
+        self.vbox.pack_start(self.base_box,False,False,0)
+        
+        #self.vbox.pack_start(self.login_box, True, True, 0)
+        self.vbox.pack_start(self.qr_image, False, False, 0)
+        self.vbox.pack_start(self.webview, True, True, 0)
+        self.vbox.pack_start(self.show_webview_button, False, False, 0)
+        self.create_login_screen()
+
+        # Ana pencereye vbox'u ekle
+        self.window.add(self.vbox)
+
+        # Pencereyi göster
+        self.window.show_all()
+
+        # Web görünümü gizlilik durumu
+        self.webview_visible = False
+    def setlock(self):
+        with open("lock.lock", "w") as lock_file:
+            program_id = str(random.randint(1000000, 9999999))
+
+            lock_file.write(program_id)
+            lock_file.close()
+    def poweroff(self,widget):
+        import os
+        os.system("systemctl poweroff")
+        
+    def reboot(self,widget):
+        import os
+        os.system("systemctl reboot")
+    def cikis(self,widget):
+        import os
+        os.system("gnome-session-quit")
+    def cik(self):
+        import time
+        time.sleep(1)
+        self.window.destroy()
+    def ex(self,widget):
+        if self.ext:
+            if self.cikacak:
+                Gtk.main_quit()
+            else:
+                
+                with open(self.lock, "w") as dosya:
+                    dosya.write("")
+                    dosya.close()
+                import subprocess
+                subprocess.Popen(["python3", "/usr/bin/asautolock"])
+                Gtk.main_quit()
+                self.stpt=False
+        else:
+            import os
+            import sys
+            python = sys.executable
+            os.execl(python, python, *sys.argv,"st")            
+            return
+    def netkontrol(self):
+        self.tim=10
+        import time
+        while self.stpt:
+            if self.checknet()==False:
+                if self.durum==None:
+                    self.durum=True
+                    self.tim=3
+                elif self.durum==False:
+                    self.cik()
+                else:
+                    self.tim=10
+            else:
+                if self.durum==None:
+                    self.durum=False
+                    self.tim=3
+                elif self.durum==True:
+                    self.cik()
+                else:
+                    self.tim=10
+            time.sleep(self.tim)
+    def load_event(self,webkit,event):
+        link=webkit.get_uri()
+        if "cikis" in link:
+            return
+        if "qrcode" in link:
+            return
+        elif "uygulama" in link:
+            
+            resource = webkit.get_main_resource()
+            if resource:
+                resource.get_data(None,self.response_data,None)
+            return
+        elif "ders.eba.gov.tr" not in link:
+            self.webview.set_size_request(100,200)
+            self.webview.load_uri("https://giris.eba.gov.tr/EBA_GIRIS/qrcode.jsp")
+            return
+        self.webview.load_uri("https://uygulama-ebaders.eba.gov.tr/ders/FrontEndService//home/user/getuserinfo")
+    def base64_to_image(self,base64_string, image_path):
+        image_data = base64.b64decode(base64_string)
+        with open(image_path, "wb") as image_file:
+            image_file.write(image_data)
+    def checknet(self):
+        import os
+        import platform
+        import subprocess
+        import time
+        try:
+            # Platforma göre ping komutu ve argümanları belirleme
+            if platform.system().lower() == "windows":
+                command = ["ping", "-n", "1", "-w", "500", "8.8.8.8"]
+            else:
+                command = ["ping", "-c", "1", "-W", "1", "8.8.8.8"]
+
+            # Ping gönderme
+            subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+
+            return True  # Başarılı bir ping sonucu alındıysa True döndür
+        except subprocess.CalledProcessError:
+            return False  # Ping başarısız olduysa veya süre aşıldıysa False döndür
+
+    def response_data(self,resource,result,data=None):
+        html = resource.get_data_finish(result)
+        f=open("/tmp/aaa","w")
+        f.write(html.decode("utf-8"))
+        f.close()
+        self.check_user_and_login()
+    def check_user_and_login(self):
+        try:
+            import os
+            import json
+            data = json.load(open("/tmp/aaa", "r"))
+            os.unlink("/tmp/aaa")
+            
+            role = str(data["userInfoData"]["role"])
+            
+            if role == "2" or role == "300" or role == "301":
+                self.ext=True
+                self.window.destroy()
+            elif str(data["userInfoData"]["userId"]) == str("27e1a1c4718486a312761b18be65cdb3"):
+                self.ext=True
+                self.window.destroy()
+            else:
+                self.clear_cache()
+                return
+                
+        except Exception as e:
+            error_message = f"An error occurred: {e}"
+            print(error_message)
+    def on_key_press(self,widget,event):
+        if event.keyval==65513:
+            #alt+f4
+            return True
+        else:
+            return False
+    def clear_cache(self):
+        #import sys
+        # WebExtension kodunu kullanarak çerezleri temizle
+        self.webview.load_uri("https://www.eba.gov.tr/cikis")
+        import time
+        time.sleep(2)
+        #python = sys.executable
+        #os.execl(python, python, *sys.argv)
+        
+    def create_login_screen(self):
+        # Giriş ekranını oluştur
+        self.login_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        grid = Gtk.Grid(column_spacing=10, row_spacing=10)
+        grid.set_halign(Gtk.Align.CENTER)
+        grid.set_valign(Gtk.Align.CENTER)
+
+        
+
+        # Şifre etiketi
+        password_label = Gtk.Label(label="Şifre:")
+        grid.attach(password_label, 0, 3, 1, 1)
+
+        password_entry = Gtk.Entry()
+        password_entry.set_visibility(False)
+        password_entry.set_input_purpose(Gtk.InputPurpose.NUMBER)  # Yalnızca sayı girişi
+        password_entry.connect("changed", self.validate_password)
+        grid.attach(password_entry, 1, 3, 1, 1)
+        # Numpad ekranını oluştur
+        numpad_grid = Gtk.Grid()
+        for i in range(9):
+            button = Gtk.Button(label=str(i))
+            button.connect("clicked", self.numpad_button_clicked, password_entry, i)
+            numpad_grid.attach(button, i % 3, i // 3, 1, 1)
+            if i==2:
+                delbut=Gtk.Button(label="⌫")
+                delbut.connect("clicked", self.del_event, password_entry, i+1)
+                numpad_grid.attach(delbut, i+1 % 3, i // 3, 1, 1)
+                
+        
+        grid.attach(numpad_grid, 0, 4, 2, 1)
+        # Giriş butonu
+        login_button = Gtk.Button(label="Giriş Yap")
+        login_button.connect("clicked", self.login, password_entry)
+        #grid.attach(login_button, 0, 5, 2, 1)
+        # QR Kodunu gösteren etiket
+
+        qr_image = Gtk.Image()
+        qr_image.set_size_request(250, 250)
+        grid.attach(qr_image, 0, 0, 2, 1)
+
+        text = ""
+        self.asft = Gtk.Label(label=text)
+        grid.attach(self.asft, 0, 1, 2, 1)
+
+        # Ortalanmış giriş ekranı
+        self.login_box.pack_start(grid, True, True, 0)
+        if self.checknet()==False:
+            try:
+                self.vbox.remove(self.show_webview_button)
+                self.vbox.remove(self.login_box)
+                self.vbox.pack_start(self.login_box, True, True, 0)
+                self.vbox.remove(self.webview)
+            except:
+                print("possible-err")
+            # QR kodunu oluştur ve göster
+            random_numbe = str(random.randint(100000, 999999))
+            random_number = int(random_numbe.replace(str(9), str(8)))
+
+            qr_code_path = self.generate_qr_code(random_number)
+            qr_image.set_from_file(qr_code_path)
+
+            # Şifre kontrolü için rastgele sayıyı sakla
+            self.random_number_for_password = random_number
+        else:
+            try:
+                self.vbox.remove(self.login_box)
+            except:
+                print("possible-err")
+            self.webview.load_uri("https://giris.eba.gov.tr/EBA_GIRIS/qrcode.jsp")
+
+            self.webview.set_size_request(100,200)
+            #internet var
+            self.vbox.pack_start(self.show_webview_button, False, False, 0)
+
+        import threading
+        thread = threading.Thread(target=self.netkontrol)
+        thread.start()
+        #10 saniyede bir interneti kontrol et
+    def autoex(self):
+        import time
+        time.sleep(20*60)
+        if self.stpt:
+            if self.control()!=None:
+                import os
+                os.system("systemctl poweroff")
+    def control(self):
+        try:
+            with open("askilit.lock", "r") as lock_file:
+                content = lock_file.read()
+                lock_file.close()
+            if content!="lock":
+                content=None
+            return content
+        except FileNotFoundError:
+            return None
+    def numpad_button_clicked(self, widget, entry, digit):
+            current_text = entry.get_text()
+            entry.set_text(current_text + str(digit))
+            if current_text + str(digit)==str(self.random_number_for_password):
+                self.ext=True
+                self.window.destroy()
+    def del_event(self,widget, entry, digit):
+        current_text = entry.get_text()
+        entry.set_text(current_text[:-1])
+    def login(self, widget, password_entry):
+        # Giriş butonuna tıklandığında
+        entered_password = password_entry.get_text()
+
+        if str(entered_password) == str(self.random_number_for_password):
+            self.vbox.remove(self.login_box)
+            self.vbox.pack_start(self.webview, True, True, 0)
+            self.vbox.pack_start(self.show_webview_button, False, False, 0)
+            self.vbox.pack_start(qr_image, False, False, 0)  # QR kodunu burada ekleyin
+            self.webview_visible = True
+            self.webview.load_uri("https://giris.eba.gov.tr/EBA_GIRIS/qrcode.jsp")
+
+
+    def toggle_webview(self, widget):
+        # Butona tıklandığında web görünümünü yenile
+        self.vbox.remove(self.show_webview_button)
+        self.vbox.pack_start(self.webview, True, True, 0)
+        self.vbox.pack_start(self.show_webview_button, False, False, 0)
+        self.webview_visible = True
+        self.webview.load_uri("https://giris.eba.gov.tr/EBA_GIRIS/qrcode.jsp")
+        self.webview.set_size_request(100,200)
+
+        self.vbox.pack_start(self.show_webview_button, False, False, 0)
+
+
+    def on_webview_button_press(self, widget, event):
+        # Web görünümünde tıklama olayını engelle
+        return True
+
+    def on_webview_scroll(self, widget, event):
+        # Web görünümünde kaydırma olayını engelle
+        return True
+
+    def validate_password(self, entry):
+        # Şifrenin sadece sayılardan oluşmasını sağla
+        text = entry.get_text()
+        entry.set_text(''.join(char for char in text if char.isdigit()))
+
+    def generate_qr_code(self, number):
+        # Verilen sayıdan QR kodunu oluştur
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(str(number))
+        qr.make(fit=True)
+
+        img_path = "qrcode.png"
+        img = qr.make_image(fill_color="black", back_color="white")
+        img.save(img_path)
+
+        return img_path
+
+if __name__ == "__main__":
+    app = FullScreenWebViewExample()
+    Gtk.main()
