@@ -26,18 +26,29 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 4.3.2)
 
 -13.01.2024
 -
+
 -Destekleyen cihazlar için 25 dakika boyunca dokunma olmaz ise otomatik kilit sistemi eklendi.(Desteklemiyor ise 45 dakikada bir kilit devreye girer)
+
 -25 dakika boyunca dokunma olmaz ise otomatik kilit sistemini aktif etmek için uygulamayı ilk açtığınızda gözüken komutu uçbirimde çalıştırınız.(Komut her tahtaya özel olarak belirlenmektedir.)
+
 -Bir şekilde pencere boyutu küçültülürse otomatik olarak uygulama yeniden başlatılır ve tam ekran olur.
+
 -Eğer kilit normal qr ile açıldıysa 30 saniyede bir internet kontrolü başlatılır ve internet geldiğinde kilit tekrar devreye girer(ebaqr gösterilir)(Öğrenciler internet kablosunu çekip tahtayı açmayı denerse diye bu sistem eklendi.)
+
 -Oturumu kapat tuşu kaldırıldı.
 
 # Kurulum:
+
 -pip3 kurulu değil ise(etaplarda genelde kurulu olmaz.) pkexec apt install python3-pip komutunu uçbirimde çalıştırınız.
+
 -Debian uzantılı paket dosyasını kurulumu başlatınız.
+
 -Cihazı yeniden başlatınız.
+
 -Ekrana gelen komutu uçbirimde çalıştırınız.(Örnek resimdeki kod çalışmaz uygulama cihaza göre kod oluşturuyor.Lütfen uygulamadan aldığınız kodu kullanın)(Opsiyonel)
+
 <img src="https://i.hizliresim.com/75c3nmm.png" alt="Landing page" height="150px">
+
 -Tahtayı yeniden başlatınız ve kilit sistemi hazır.
 
 # Todo:
