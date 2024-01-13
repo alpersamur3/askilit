@@ -31,6 +31,15 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 4.3.2)
 -Bir şekilde pencere boyutu küçültülürse otomatik olarak uygulama yeniden başlatılır ve tam ekran olur.
 -Eğer kilit normal qr ile açıldıysa 30 saniyede bir internet kontrolü başlatılır ve internet geldiğinde kilit tekrar devreye girer(ebaqr gösterilir)(Öğrenciler internet kablosunu çekip tahtayı açmayı denerse diye bu sistem eklendi.)
 -Oturumu kapat tuşu kaldırıldı.
+
+# Kurulum:
+-pip3 kurulu değil ise(etaplarda genelde kurulu olmaz.) pkexec apt install python3-pip komutunu uçbirimde çalıştırınız.
+-Debian uzantılı paket dosyasını kurulumu başlatınız.
+-Cihazı yeniden başlatınız.
+-Ekrana gelen komutu uçbirimde çalıştırınız.(Örnek resimdeki kod çalışmaz uygulama cihaza göre kod oluşturuyor.Lütfen uygulamadan aldığınız kodu kullanın)(Opsiyonel)
+<img src="https://i.hizliresim.com/75c3nmm.png" alt="Landing page" height="150px">
+-Tahtayı yeniden başlatınız ve kilit sistemi hazır.
+
 # Todo:
 
 -İnternet yokken ki gelen qr koda daha iyi bir çözüm bulmak(Öğrencilerin açamaması için)(geçici olarak daha iyi bir çözüm bulundu.)
