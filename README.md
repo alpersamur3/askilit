@@ -1,7 +1,7 @@
 # ASKilit
 Bu uygulama öğrencilerin tahtayı kurcalamasını engellemek içindir.
 
-Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 4.3.2) ve pip sürümünün çok eski olmasından dolayı çalışmadı.(Çalışan bir sürüm ayarlamaya çalışıyorum ama olumlu bir sonuç çıkacak gibi gözükmüyor.5.3’te Ebaqr çalışsa bile normal qr çalışmıyor.)
+Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 3.4.2) ve pip sürümünün çok eski olmasından dolayı çalışmadı.(Çalışan bir sürüm ayarlamaya çalışıyorum ama olumlu bir sonuç çıkacak gibi gözükmüyor.5.3’te Ebaqr çalışsa bile normal qr çalışmıyor.)
 
 # ASkilit-2.0 Yayınlandı :)
 
