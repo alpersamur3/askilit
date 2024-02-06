@@ -3,20 +3,24 @@ Bu uygulama öğrencilerin tahtayı kurcalamasını engellemek içindir.
 
 Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 4.3.2) ve pip sürümünün çok eski olmasından dolayı çalışmadı.(Çalışan bir sürüm ayarlamaya çalışıyorum ama olumlu bir sonuç çıkacak gibi gözükmüyor.5.3’te Ebaqr çalışsa bile normal qr çalışmıyor.)
 
-# Özellikleri:
+# ASkilit-2.0 Yayınlandı :)
+
+# İşte Tüm Özellikleri:
 -İnternet var iken ebaqr aktif olur.
 
 -Öğretmen hesabı ile Ebaqr okutulduğunda kilit açılır.
 
--45 dakika sonra otomatik olarak tekrar kilitlenir.(Güncelleme ile gelen özelliği okuyunuz)
+-45 dakika sonra otomatik olarak tekrar kilitlenir.(Destekleyen cihazlar için 25 dakika boyunca dokunma olmaz ise otomatik kilitleme sistemi)
 
 -Kilit ekranı açık iken 20 dakika boyunca giriş yapılmazsa tahta otomatik olarak kapanır.
 
--İnternet yok ise normal qr devreye girer okutunca şifre çıkar ve o şifre girilerek kilit açılır.(Yeni güncelleme ile gelen özelliği inceleyiniz)
+-İnternet yok ise normal qr devreye girer okutunca şifre çıkar ve o şifre girilerek kilit açılır.
+
+-Eğer kilit normal qr ile açıldıysa 30 saniyede bir internet kontrolü başlatılır ve internet geldiğinde kilit tekrar devreye girer(ebaqr gösterilir)(Öğrenciler internet kablosunu çekip tahtayı açmayı denerse diye bu sistem eklendi.)
 
 -Hiçbir şekilde kapatılamaz kapatılırsa anında tekrar açılır ve alta alınamaz.(Bir şekilde alta alınsa bile herhangi bir uygulama açılırsa kilit en üste çıkar)
 
--1 dakikada(13.01.2024) bir internet bağlantısı kontrol edilir ve ona göre ebaqr ya da normal qr gösterilir.
+-1 dakikada bir internet bağlantısı kontrol edilir ve ona göre ebaqr ya da normal qr gösterilir.
 
 -Kilit uygulaması zaten açıksa tekrar açılamaz.
 
@@ -24,18 +28,13 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 4.3.2)
 
 -Masaüstündeki simge ile kilit başlatılabilir.
 
--13.01.2024
--
-
--Destekleyen cihazlar için 25 dakika boyunca dokunma olmaz ise otomatik kilit sistemi eklendi.(Desteklemiyor ise 45 dakikada bir kilit devreye girer)
-
--25 dakika boyunca dokunma olmaz ise otomatik kilit sistemini aktif etmek için uygulamayı ilk açtığınızda gözüken komutu uçbirimde çalıştırınız.(Komut her tahtaya özel olarak belirlenmektedir.)
-
 -Bir şekilde pencere boyutu küçültülürse otomatik olarak uygulama yeniden başlatılır ve tam ekran olur.
 
--Eğer kilit normal qr ile açıldıysa 30 saniyede bir internet kontrolü başlatılır ve internet geldiğinde kilit tekrar devreye girer(ebaqr gösterilir)(Öğrenciler internet kablosunu çekip tahtayı açmayı denerse diye bu sistem eklendi.)
+-v2.0 sürümü ile tahta açılışta EbaQr yükleniyor yazısı göstererek 20 saniyelik bir bekleme yapar.Böylece interneti geç algılayan tahtalarda internet bu süre içinde algılanır.
 
--Oturumu kapat tuşu kaldırıldı.
+-v2.0 sürümü ile internet gidip geldiğinde uygulama kapanıp açılmaz direkt olarak normal qr ve ebaqr arasında geçiş yapılır.
+
+-v2.0 sürümü ile kararlılık arttırıldı ve iyileştirmeler,hata gidermeler yapıldı.
 
 # Kurulum:
 
@@ -46,6 +45,7 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 4.3.2)
 -Cihazı yeniden başlatınız.
 
 -Ekrana gelen komutu uçbirimde çalıştırınız.(Örnek resimdeki kod çalışmaz uygulama cihaza göre kod oluşturuyor.Lütfen uygulamadan aldığınız kodu kullanın)(Opsiyonel)
+-25 dakika boyunca dokunma olmaz ise otomatik kilit sistemini aktif etmek için uygulamayı ilk açtığınızda gözüken komutu uçbirimde çalıştırınız.(Komut her tahtaya özel olarak belirlenmektedir.)
 
 <img src="https://i.hizliresim.com/75c3nmm.png" alt="Landing page" height="150px">
 
