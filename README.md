@@ -57,6 +57,7 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 4.3.2)
 
 # Görseller:
 
+<img src="https://i.hizliresim.com/cgdqfvy.png" alt="Landing page" height="270px">
 <img src="https://i.hizliresim.com/c9os21v.png" alt="Landing page" height="270px">
 <img src="https://i.hizliresim.com/1m8qwj8.png" alt="Landing page" height="270px">
 <img src="https://i.hizliresim.com/dy1n9eu.png" alt="Landing page" height="270px">
