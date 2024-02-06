@@ -1,8 +1,8 @@
 Package: ASKilit
-Version: 1.0
+Version: 2.0
 Architecture: all
 Maintainer: Alper Samur <alpersamur0705@gmail.com>
-Depends: python3.7,python3-pip,xinput
-Installed-Size: 21.4
+Depends: python3.7,python3-pip,xinput,python3-qrcode,python3-evdev
+Installed-Size: 401.6
 Homepage:<https://alpersamur.blogspot.com/>
 Description: ASKilit öğrencilerin tahtada işlem yapmasını engellemek amaçlı bir öğrenci tarafından geliştirilmiştir :) İnternet varken ebaqr yokken normal qr aktif olmaktadır.İnternet 10 saniyede bir kontrol edilmektedir. Bayram Karahan öğretmenimden esinlenerek geliştirdim.Buradan onada teşekkürler.Önerilen sürüm Etap 19 ve üzeridir.Hata ve her türlü sorunuz için mail atabilirsiniz.pip3 kurmak için gereken kod: pkexec apt install python3-pip Uçbirimde çalıştırınız.Tahtayı yeniden başlatınca kilit aktif hale gelecektir.

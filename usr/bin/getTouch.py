@@ -1,6 +1,5 @@
 import time
 import subprocess
-import psutil
 import subprocess
 import os
 import random

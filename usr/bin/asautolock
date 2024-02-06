@@ -1,6 +1,5 @@
 import time
 import subprocess
-import psutil
 import subprocess
 import os
 import random
@@ -10,11 +9,7 @@ import getTouch
 ex=True
 started=False
 
-try:
-    from evdev import InputDevice, categorize, ecodes
-except:
-    os.system("pip3 install evdev")
-    from evdev import InputDevice, categorize, ecodes
+from evdev import InputDevice, categorize, ecodes
 
 myid=""
 os.system("xhost +")
@@ -48,30 +43,37 @@ def ct():
         else:
             break
 def detect_touch_events(device_path):
-    global fid,started
-    device = InputDevice(device_path)
-    print(f"Dokunmatik ekran algılandı: {device.name}")
-    events = []
-    fid = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') for i in range(6))
-    sthread = threading.Thread(target=ct)
-    sthread.start()
-    for event in device.read_loop():
-        if not started:
-            if event.sec not in events:
-                if len(events)>15:
-                    events.clear()
-                events.append(event.sec)
-                print(events)
-                global ex
-                fid = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') for i in range(6))
-                ex=False
-                sthread.join()
-                ex=True
-                sthread = threading.Thread(target=ct)
-                sthread.start()
-                print("dokunma algılandı")
-        else:
-            break
+    try:
+        global fid,started
+        device = InputDevice(device_path)
+        print(f"Dokunmatik ekran algılandı: {device.name}")
+        events = []
+        fid = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') for i in range(6))
+        sthread = threading.Thread(target=ct)
+        sthread.start()
+        for event in device.read_loop():
+            if not started:
+                if event.sec not in events:
+                    if len(events)>15:
+                        events.clear()
+                    events.append(event.sec)
+                    print(events)
+                    global ex
+                    fid = ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') for i in range(6))
+                    ex=False
+                    sthread.join()
+                    ex=True
+                    sthread = threading.Thread(target=ct)
+                    sthread.start()
+                    print("dokunma algılandı")
+            else:
+                break
+    except:
+        print("touch acces denied")
+        time.sleep(45 * 60)
+        if clock()==myid:
+            # Ana betiği başlatın
+            subprocess.Popen(["python3", "/usr/bin/askilit"])
 
 myid=clock()
 # Touch cihazının ID'sini al
@@ -80,8 +82,7 @@ if myid!=None:
         detect_touch_events(getTouch.getPath())
     else:
         print("Touch cihazı bulunamadı.")
-        if on==None:
-            time.sleep(45 * 60)
-            if clock()==myid:
-                # Ana betiği başlatın
-                subprocess.Popen(["python3", "/usr/bin/askilit"])
+        time.sleep(45 * 60)
+        if clock()==myid:
+            # Ana betiği başlatın
+            subprocess.Popen(["python3", "/usr/bin/askilit"])
