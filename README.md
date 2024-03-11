@@ -3,7 +3,9 @@ Bu uygulama öğrencilerin tahtayı kurcalamasını engellemek içindir.
 
 Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 3.4.2) ve pip sürümünün çok eski olmasından dolayı çalışmadı.(Çalışan bir sürüm ayarlamaya çalışıyorum ama olumlu bir sonuç çıkacak gibi gözükmüyor.5.3’te Ebaqr çalışsa bile normal qr çalışmıyor.)
 
-# ASkilit-2.0 Yayınlandı :)
+# ASkilit-3.0 Yayınlandı :)
+-Görüntü iyileştirmeleri
+-Kod düzenlenmesi,yorum satırları ve pep-8 kurallarına uyum.
 
 # İşte Tüm Özellikleri:
 -İnternet var iken ebaqr aktif olur.
@@ -57,8 +59,8 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 3.4.2)
 
 # Görseller:
 
-<img src="https://i.hizliresim.com/cgdqfvy.png" alt="Landing page" height="270px">
-<img src="https://i.hizliresim.com/c9os21v.png" alt="Landing page" height="270px">
+<img src="https://i.hizliresim.com/mfhkzd8.png" alt="Landing page" height="270px">
+<img src="https://i.hizliresim.com/d90jzca.png" alt="Landing page" height="270px">
 <img src="https://i.hizliresim.com/1m8qwj8.png" alt="Landing page" height="270px">
 <img src="https://i.hizliresim.com/dy1n9eu.png" alt="Landing page" height="270px">
 
