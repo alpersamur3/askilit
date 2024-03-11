@@ -5,6 +5,7 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 3.4.2)
 
 # ASkilit-3.0 Yayınlandı :)
 -Görüntü iyileştirmeleri
+
 -Kod düzenlenmesi,yorum satırları ve pep-8 kurallarına uyum.
 
 # İşte Tüm Özellikleri:
