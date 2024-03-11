@@ -7,11 +7,11 @@ import threading
 import sys
 
 
-
 def getTid():
     # xinput komutunu çalıştır
     try:
-        xinput_output = subprocess.check_output("xinput list", shell=True, stderr=subprocess.STDOUT, text=True)
+        xinput_output = subprocess.check_output(
+            "xinput list", shell=True, stderr=subprocess.STDOUT, text=True)
     except subprocess.CalledProcessError as e:
         print("Hata oluştu:", e)
         return None
@@ -32,11 +32,13 @@ def getTid():
 
     return None
 
+
 def getPath():
     device_id = getTid()
     if device_id is not None:
         try:
-            xinput_props_output = subprocess.check_output(f"xinput list-props {device_id}", shell=True, stderr=subprocess.STDOUT, text=True)
+            xinput_props_output = subprocess.check_output(
+                f"xinput list-props {device_id}", shell=True, stderr=subprocess.STDOUT, text=True)
         except subprocess.CalledProcessError as e:
             print("Hata oluştu:", e)
             return None
@@ -51,7 +53,7 @@ def getPath():
                     device_path = parts[3]
                     device_path = device_path.replace('"', '')
                     if device_path is not None:
-                       return device_path
+                        return device_path
 
                     else:
                         return None
