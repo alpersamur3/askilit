@@ -62,6 +62,6 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 3.4.2)
 
 <img src="https://i.hizliresim.com/mfhkzd8.png" alt="Landing page" height="270px">
 <img src="https://i.hizliresim.com/d90jzca.png" alt="Landing page" height="270px">
-<img src="https://i.hizliresim.com/1m8qwj8.png" alt="Landing page" height="270px">
+<img src="https://i.hizliresim.com/oq1xhpf.png" alt="Landing page" height="270px">
 <img src="https://i.hizliresim.com/dy1n9eu.png" alt="Landing page" height="270px">
 
