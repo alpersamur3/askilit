@@ -50,7 +50,9 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 3.4.2)
 -Ekrana gelen komutu uçbirimde çalıştırınız.(Örnek resimdeki kod çalışmaz uygulama cihaza göre kod oluşturuyor.Lütfen uygulamadan aldığınız kodu kullanın)(Opsiyonel)
 -25 dakika boyunca dokunma olmaz ise otomatik kilit sistemini aktif etmek için uygulamayı ilk açtığınızda gözüken komutu uçbirimde çalıştırınız.(Komut her tahtaya özel olarak belirlenmektedir.)
 
-[![Image](https://i.hizliresim.com/g64z8fc.png)](https://hizliresim.com/g64z8fc)
+![75c3nmm](https://github.com/user-attachments/assets/d415a5d8-cdf6-45cc-94ac-98c926cd720c)
+
+
 -Tahtayı yeniden başlatınız ve kilit sistemi hazır.
 
 # Todo:
@@ -59,8 +61,7 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 3.4.2)
 
 # Görseller:
 
-<img src="https://i.hizliresim.com/mfhkzd8.png" alt="Landing page" height="270px">
-<img src="https://i.hizliresim.com/d90jzca.png" alt="Landing page" height="270px">
-<img src="https://i.hizliresim.com/oq1xhpf.png" alt="Landing page" height="270px">
-<img src="https://i.hizliresim.com/dy1n9eu.png" alt="Landing page" height="270px">
-
+![mfhkzd8](https://github.com/user-attachments/assets/5dba6089-628d-49d3-b008-3f6f89f3fb7b)
+![d90jzca](https://github.com/user-attachments/assets/791e286a-18ff-430f-b766-e4bb916eb535)
+![oq1xhpf](https://github.com/user-attachments/assets/fc508eb3-0a83-434a-b28f-d6d8e465dc42)
+![dy1n9eu](https://github.com/user-attachments/assets/4becda0e-125f-43cf-9f9a-13b2f47c95a8)
