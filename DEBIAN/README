@@ -1,0 +1,32 @@
+# Askilit Kurulum Talimatları
+
+## Gereksinimler
+- Python 3.7 veya üzeri
+- `python3-pip`, `xinput`, `python3-qrcode`, `python3-evdev` paketleri
+
+## Kurulum
+1. `.deb` paketini indirin:
+   ```bash
+   wget https://github.com/alpersamur3/askilit/releases/download/askilit/askilit-3.2.deb
+Paketi kurun:
+
+sudo dpkg -i askilit.deb
+Eksik bağımlılıkları yükleyin:
+
+sudo apt-get install -f
+
+## Derleme (Kaynak Koddan)
+Kaynak kodunu indirin:
+
+git clone https://github.com/alpersamur3/askilit.git
+cd askilit
+
+Paketi oluşturun:
+
+dpkg-deb --build askilit
+Oluşan .deb paketini kurun:
+
+sudo dpkg -i askilit.deb
+
+Sorun Giderme
+Herhangi bir sorunla karşılaşırsanız, lütfen alpersamur0705@gmail.com adresine e-posta gönderin.

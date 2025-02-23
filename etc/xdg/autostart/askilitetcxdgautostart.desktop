@@ -1,6 +1,5 @@
 #!/usr/bin/env xdg-open
 [Desktop Entry]
-Exec=sh /usr/bin/askilitxdglink.sh
+Exec=/usr/bin/askilitxdglink.sh
 Type=Application
-Name[tr_TR]=askilitetcxdgautostart.desktop
-
+Name=askilitetcxdgautostart

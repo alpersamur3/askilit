@@ -1,19 +1,24 @@
+#!/usr/bin/env python3
+
 import gi
 import random
-import qrcode
+#import qrcode
+import generate_qr
+import check_net
+import asutils
 
 import json
 import base64
 import sys
-from tkinter import messagebox
-import time
 import threading
 # gi.require_version('WebKit2', '4.0')
-from gi.repository import Gtk, WebKit2, Gio, Gdk, GdkPixbuf, GObject
+from gi.repository import Gtk, WebKit2, Gio, Gdk, GdkPixbuf, GObject,GLib
 import os
-
-
-class FullScreenWebViewExample:
+import start_lock
+import MessageBox
+import requests
+import getTouch
+class ASKilit:
 
     def __init__(self):
         # eba nın yükleneceği url ve banner için kontrol url si
@@ -24,7 +29,7 @@ class FullScreenWebViewExample:
         # fullscreen durumu ilk başta false ayarlanır sonra pencere oluşunca true yapılır.
         self.fs = False
         self.stpt = True
-        self.durum = None
+        self.status = None
         self.qrlog = False
         self.inf = True
         # kilit dosyasının yolu
@@ -39,12 +44,12 @@ class FullScreenWebViewExample:
         self.window.set_default_size(1920, 1080)
         self.window.fullscreen()
         # alt+f4 kombinasyonu engellenmesi için
-        self.window.connect("key-press-event", self.on_key_press)
+        self.window.connect("key-press-event", asutils.on_key_press)
         # pencere bir şekilde küçültülür ise tam ekran yapılır
         self.window.connect("window-state-event", self.setfull)
 
         self.ext = False
-        self.cikacak = False
+        self.willexit = False
 
         # kapat,simge durumuna al barını gizler
         self.window.set_property("skip-taskbar-hint", True)
@@ -58,41 +63,41 @@ class FullScreenWebViewExample:
             # uygulama iconuna tıklayarak başlatıldı
             print("none")
             try:
-                with open(self.lock, "r+") as dosya:
-                    self.lck = dosya.read()
-                    dosya.close()
+                with open(self.lock, "r+") as file:
+                    self.lck = file.read()
+                    file.close()
             except Exception as er:
                 self.lck = ""
                 print(er)
             # uygulamanın bir örneği çalışır değilse
             if self.lck == "":
                 # lock dosyası oluştur
-                with open(self.lock, "w") as dosya:
-                    dosya.write("lock")
-                    dosya.close()
+                with open(self.lock, "w") as file:
+                    file.write("lock")
+                    file.close()
             else:
                 # bir örneği çalışıyor ise şuankini sonlandır
                 print("cikiyom")
                 self.ext = True
-                self.cikacak = True
-                thread = threading.Thread(target=self.cik)
+                self.willexit = True
+                thread = threading.Thread(target=self.fext)
                 thread.start()
         else:
             # autostart ile açıldıysa kilit dosyası oluşturulduysa oluşturma yoksa oluştur
             try:
-                with open(self.lock, "r+") as dosya:
-                    self.lck = dosya.read()
-                    dosya.close()
+                with open(self.lock, "r+") as file:
+                    self.lck = file.read()
+                    file.close()
             except:
                 self.lck = ""
             if self.lck == "":
-                with open(self.lock, "w") as dosya:
-                    dosya.write("lock")
-                    dosya.close()
+                with open(self.lock, "w") as file:
+                    file.write("lock")
+                    file.close()
         # eğer kapanması gerekiyorsa hiç başlatma(zaten örneği çalışıyorsa vb.)
-        if self.ext != True and self.cikacak != True:
+        if self.ext != True and self.willexit != True:
             # autolock modülü için benzersiz bir id kaydet
-            self.setlock()
+            asutils.setlock()
             # 20 dakika boyunca kilit açılmaz ise cihazı kapatan methodu arka planda başlat
             thread = threading.Thread(target=self.autoex)
             thread.start()
@@ -105,23 +110,23 @@ class FullScreenWebViewExample:
             # banner
             self.adview = WebKit2.WebView()
             self.adview.connect("button-press-event",
-                                self.on_webview_button_press)
-            self.adview.connect("scroll-event", self.on_webview_scroll)
+                                asutils.on_webview_button_press)
+            self.adview.connect("scroll-event", asutils.on_webview_scroll)
             self.adview.connect("load-changed", self.ad_event)
             self.adview.connect("motion-notify-event",
-                                self.on_webview_motion_notify)
-            self.adview.connect("touch-event", self.on_webview_touch_event)
+                                asutils.on_webview_motion_notify)
+            self.adview.connect("touch-event", asutils.on_webview_touch_event)
             self.adview.set_size_request(100, 100)
 
             # Web görünümü oluştur(eba yüklenmesi için)
             self.webview = WebKit2.WebView()
             self.webview.connect("button-press-event",
-                                 self.on_webview_button_press)
-            self.webview.connect("scroll-event", self.on_webview_scroll)
+                                 asutils.on_webview_button_press)
+            self.webview.connect("scroll-event", asutils.on_webview_scroll)
             self.webview.connect("load-changed", self.load_event)
             self.webview.connect("motion-notify-event",
-                                 self.on_webview_motion_notify)
-            self.webview.connect("touch-event", self.on_webview_touch_event)
+                                 asutils.on_webview_motion_notify)
+            self.webview.connect("touch-event", asutils.on_webview_touch_event)
             # butonların ve hakkımda kısmının olduğu box
             self.base_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
             # hakkımda bilgisinin olduğu box ve hakkımda bilgileri
@@ -154,11 +159,11 @@ class FullScreenWebViewExample:
 
             # tahtayı kapat butonu
             self.poweroff_button = Gtk.Button(label="Tahtayı Kapat")
-            self.poweroff_button.connect("clicked", self.poweroff)
+            self.poweroff_button.connect("clicked", asutils.poweroff)
             self.poweroff_button.set_size_request(30, 30)
             # tahtayı yeniden başlat butonu
             self.restart_button = Gtk.Button(label="Tahtayı Yeniden Başlat")
-            self.restart_button.connect("clicked", self.reboot)
+            self.restart_button.connect("clicked", asutils.reboot)
             self.restart_button.set_size_request(30, 30)
             # boxların içinde öğelerin eklenmesi
             self.info_box.pack_start(image_box, True, True, 0)
@@ -181,15 +186,15 @@ class FullScreenWebViewExample:
             self.vbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
             # internet varken gössterilen box(eba qr)
             self.netbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-            self.disbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+            self.outbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
             # öğelerin box'a eklenmesi
             self.vbox.pack_start(self.base_box, False, False, 0)
 
-            self.disbox.pack_start(self.webview, True, True, 0)
-            self.disbox.pack_start(self.show_webview_button, False, False, 0)
+            self.outbox.pack_start(self.webview, True, True, 0)
+            self.outbox.pack_start(self.show_webview_button, False, False, 0)
             self.netbox.pack_start(self.adview, False, False, 0)
             self.adview.load_uri("https://www.google.com")
-            self.netbox.pack_start(self.disbox, True, True, 0)
+            self.netbox.pack_start(self.outbox, True, True, 0)
             self.vbox.pack_start(self.netbox, True, True, 0)
             # giriş ekranı oluşturulması(internet durumuna göre)
             self.create_login_screen()
@@ -223,119 +228,92 @@ class FullScreenWebViewExample:
             # ilk açılışta pencere oluşunca tetiklenmeyi engelle
             if self.fs:
                 print("fs")
-                self.cik()
+                self.fext()
             else:
                 self.fs = True
 
-    def setlock(self):
-        # autolock modülü için benzersiz kod oluşturur
-        with open("/tmp/lock.lock", "w") as lock_file:
-            program_id = str(random.randint(1000000, 9999999))
-
-            lock_file.write(program_id)
-            lock_file.close()
-
-    def poweroff(self, widget):
-        # sistemi kapatır
-
-        os.system("systemctl poweroff")
-
-    def reboot(self, widget):
-        # sistemi yeniden başlat
-        os.system("systemctl reboot")
-#    def cikis(self,widget):
-# oturumu kapat(devre dışı)
-#        import os
-#        os.system("gnome-session-quit")
-
-    def cik(self):
+    def fext(self):
         # uygulamayı kapat (1sn bekleme gerekli)
-        time.sleep(1)
-        self.window.destroy()
+        GLib.timeout_add_seconds(1, self.window.destroy)
 
     def ex(self, widget):
         # giriş yapmadan uygulama kapanmaya zorlanırsa geri aç giriş yapıldıysa kapat ve oto kilit modülünü başlat
         if self.ext:
             print("ext")
-            if self.cikacak:
+            if self.willexit:
                 print("cik")
                 self.stpt = False
                 Gtk.main_quit()
             else:
                 if self.qrlog:
-                    import subprocess
-                    subprocess.Popen(["python3", "/usr/bin/asrestart"])
-                with open(self.lock, "w") as dosya:
-                    dosya.write("")
-                    dosya.close()
-                import subprocess
+                    os.spawnlp(os.P_NOWAIT, "python3", "python3", "/usr/bin/asrestart")
+                with open(self.lock, "w") as file:
+                    file.write("")
                 print("ok")
-                subprocess.Popen(["python3", "/usr/bin/asautolock"])
+                os.spawnlp(os.P_NOWAIT, "python3", "python3", "/usr/bin/asautolock")
                 Gtk.main_quit()
                 self.stpt = False
         else:
             print("no")
-
-            import sys
             python = sys.executable
             os.execl(python, python, *sys.argv, "pst")
 
     def netkontrol(self):
-        # Dakikada bir kere interneti kontrol et giderse/gelirse uygun moda geç
-        self.tim = 1*60
-
-        while self.stpt:
-            if self.checknet() == False:
-                if self.durum == None:
-                    time.sleep(0.1)
-                    self.qrmode()
-                    self.durum = True
-                    self.tim = 20
-                    # cihazın ilk açılışında tek seferliğine 20 saniye sonra tekrar kontrol et(ilk açılışta inetrnet geç gelebilir)
-                elif self.durum == False:
-                    self.qrmode()
-                    self.durum = True
-                else:
-                    self.tim = 1*60
+        # İnternet durumunu kontrol et ve uygun moda geç.
+        if not check_net.checknet():
+            if self.status is None:
+                GLib.timeout_add(100, self.qrmode)  # 100 ms sonra qrmode'u çağır.
+                self.status = True
+                self.tim = 20  # İlk açılışta 20 saniye sonra tekrar kontrol et.
+            elif self.status is False:
+                self.qrmode()
+                self.status = True
             else:
-                if self.durum == None:
-                    time.sleep(0.1)
-                    self.webmode()
-                    self.durum = False
-                    self.tim = 20
-                elif self.durum == True:
-                    self.webmode()
-                    self.durum = False
-                else:
-                    # eba qr'ı dakikada bir yenile
-                    try:
-                        self.webview.load_uri(self.ebaurl)
-                    except:
-                        print("ex")
+                self.tim = 60  # Normal kontrol aralığına dön.
+        else:
+            if self.status is None:
+                GLib.timeout_add(100, self.webmode)  # 100 ms sonra webmode'u çağır.
+                self.status = False
+                self.tim = 20  # İlk açılışta 20 saniye sonra tekrar kontrol et.
+            elif self.status is True:
+                self.webmode()
+                self.status = False
+            else:
+                # EBA QR'ı dakikada bir yenile.
+                try:
+                    self.webview.load_uri(self.ebaurl)
+                except Exception as e:
+                    print(f"Hata: {e}")
+                self.tim = 60  # Normal kontrol aralığına dön.
 
-                    self.tim = 1*60
-            print("sleep")
-            time.sleep(self.tim)
-            print("loss")
+        # Bir sonraki kontrolü planla.
+        if self.stpt:
+            GLib.timeout_add_seconds(self.tim, self.netkontrol)
 
     def ad_event(self, webkit, event):
-        # banner yüklenme durumu
+        # Banner yüklenme durumu
         link = webkit.get_uri()
         if "google" in link:
-
-            time.sleep(0.2)
-            self.adview.hide()
+            # 0.2 saniye sonra adview'i gizle
+            GLib.timeout_add(200, self.hide_adview)  # 200 milisaniye = 0.2 saniye
         else:
+            # 0.2 saniye sonra adview'i göster
+            GLib.timeout_add(200, self.show_adview)  # 200 milisaniye = 0.2 saniye
 
-            time.sleep(0.2)
-            self.adview.show()
+    def hide_adview(self):
+        self.adview.hide()
+        return False  # False dönerse callback tekrarlanmaz.
+
+    def show_adview(self):
+        self.adview.show()
+        return False  # False dönerse callback tekrarlanmaz.
 
     def load_event(self, webkit, event):
         # eba yüklenme durumu
         if self.strteba:
             # uygulama başlangıcında tüm görünümleri gizle
-            time.sleep(0.3)
-            self.rmall()
+            GLib.timeout_add(200, self.rmall)
+            
             return
         link = webkit.get_uri()
         if "cikis" in link:
@@ -356,26 +334,6 @@ class FullScreenWebViewExample:
         self.webview.load_uri(
             "https://uygulama-ebaders.eba.gov.tr/ders/FrontEndService//home/user/getuserinfo")
 
-    def checknet(self):
-        # interneti kontrol et
-        import platform
-        import subprocess
-
-        try:
-            # Platforma göre ping komutu ve argümanları belirleme
-            if platform.system().lower() == "windows":
-                command = ["ping", "-n", "1", "-w", "500", "8.8.8.8"]
-            else:
-                command = ["ping", "-c", "1", "-W", "1", "8.8.8.8"]
-
-            # Ping gönderme
-            subprocess.run(command, stdout=subprocess.PIPE,
-                           stderr=subprocess.PIPE, check=True)
-
-            return True  # Başarılı bir ping sonucu alındıysa True döndür
-        except subprocess.CalledProcessError:
-            return False  # Ping başarısız olduysa veya süre aşıldıysa False döndür
-
     def response_data(self, resource, result, data=None):
         # kullanıcı bilgisini tmp ye kaydet
         html = resource.get_data_finish(result)
@@ -389,19 +347,21 @@ class FullScreenWebViewExample:
         # kullanıcı kontrol
         try:
 
-            import json
+            
+
             data = json.load(open("/tmp/aaa", "r"))
             os.unlink("/tmp/aaa")
+            print(data["userInfoData"]["userId"])
             # kullanıcı rolü
             role = str(data["userInfoData"]["role"])
             # öğretmen ise kilit uygulamasını sonlandır
             if role == "2" or role == "300" or role == "301":
                 self.ext = True
-                self.window.destroy()
+                self.fext()
             # uygulamanın sahibi ise kilit uygulamasını sonlandır
-            elif str(data["userInfoData"]["userId"]) == str("27e1a1c4718486a312761b18be65cdb3"):
+            elif str(data["userInfoData"]["userId"]) == str("1e3c2ea6663b3fd764705aab63b79192"):
                 self.ext = True
-                self.window.destroy()
+                self.fext()
             else:
                 # öğretmen değil ise hesaptan çıkış yap ve qr ı tekrar göster
                 self.clear_cache()
@@ -411,45 +371,46 @@ class FullScreenWebViewExample:
             error_message = f"An error occurred: {e}"
             print(error_message)
 
-    def on_key_press(self, widget, event):
-        if event.keyval == 65513:
-            # alt+f4'ü engelle
-            return True
-        else:
-            return False
-
     def clear_cache(self):
         # girilen hesaptan çıkış yap
         self.webview.load_uri("https://www.eba.gov.tr/cikis")
+        GLib.timeout_add(2000, self.webview.load_uri(self.ebaurl))
 
-        time.sleep(2)
-
-    def geri_say(self):
-        # ilk açılışta ebaqr yükleniyor göster(internet geç geldiğinden gelene kadar beklemek için)
+    def count_down(self):
+        # İlk açılışta EBA QR yükleniyor göster (internet geç geldiğinden gelene kadar beklemek için)
         self.strteba = True
 
-        time.sleep(0.3)
-        self.rmall()
+        # 300 milisaniye (0.3 saniye) sonra tüm görünümleri gizle
+        GLib.timeout_add(300, self.rmall)
 
-        while self.geri_sayim_deger > 0:
+        # Geri sayım işlemini başlat
+        self.start_count_down()
+
+    def start_count_down(self):
+        if self.count_down_value > 0:
             # Arayüz güncellemelerini ana döngü içinde yapmak için GLib.idle_add kullanılır
             GObject.idle_add(self.update_ui)
 
-            time.sleep(1)
-            self.geri_sayim_deger -= 1
-        self.kutu.hide()
-        self.strteba = False
-# internet durumuna göre olan mod açılır
-        if self.checknet():
-            self.webmode()
+            # Geri sayım değerini azalt
+            self.count_down_value -= 1
 
+            # 1 saniye sonra tekrar bu fonksiyonu çağır
+            GLib.timeout_add_seconds(1, self.start_count_down)
         else:
-            self.qrmode()
+            # Geri sayım tamamlandığında kutuyu gizle ve strteba'yı False yap
+            self.kutu.hide()
+            self.strteba = False
+
+            # İnternet durumuna göre uygun modu aç
+            if check_net.checknet():
+                self.webmode()
+            else:
+                self.qrmode()
 
     def webmode(self):
         # tüm görünümleri kaldır ve ebaqr için gerekli olan şeyleri görüntüle
         self.rmall()
-        import requests
+        
         res = requests.get(self.konturl)
         if str(res.status_code) == "200":
             try:
@@ -473,7 +434,7 @@ class FullScreenWebViewExample:
         random_numbe = str(random.randint(100000, 999999))
         random_number = int(random_numbe.replace(str(9), str(8)))
 
-        qr_code_path = self.generate_qr_code(random_number)
+        qr_code_path = generate_qr.generate_qr_code(random_number)
         self.qr_image.set_from_file(qr_code_path)
 
         # Şifre kontrolü için rastgele sayıyı sakla
@@ -488,11 +449,11 @@ class FullScreenWebViewExample:
 
     def update_ui(self):
         # Arayüz güncellemelerini yap
-        self.geri_sayim_etiket.set_label(
-            "Geri Sayım: {}".format(self.geri_sayim_deger))
+        self.count_down_etiket.set_label(
+            "Geri Sayım: {}".format(self.count_down_value))
 
         # Progress bar'ı güncelle
-        oran = (19 - self.geri_sayim_deger) / 19.0
+        oran = (19 - self.count_down_value) / 19.0
         self.yukleme_cubugu.set_fraction(oran)
 
     def create_login_screen(self):
@@ -537,14 +498,14 @@ class FullScreenWebViewExample:
         random_numbe = str(random.randint(100000, 999999))
         random_number = int(random_numbe.replace(str(9), str(8)))
 
-        qr_code_path = self.generate_qr_code(random_number)
+        qr_code_path = generate_qr.generate_qr_code(random_number)
         self.qr_image.set_from_file(qr_code_path)
         self.random_number_for_password = random_number
         # Ortalanmış giriş ekranı
         self.login_box.pack_start(grid, True, True, 0)
         if self.strt != "st":
             # cihazilk kez açılmadıysa
-            if self.checknet() == False:
+            if check_net.checknet() == False:
                 # inetrnet yok
                 self.qrmode()
 
@@ -570,30 +531,31 @@ class FullScreenWebViewExample:
             # geri sayım yap
             self.yukleme_cubugu = Gtk.ProgressBar()
             self.yukleme_cubugu.set_pulse_step(0.1)
-            self.geri_sayim_etiket = Gtk.Label(label="Geri Sayım:")
-            self.geri_sayim_deger = 19
+            self.count_down_etiket = Gtk.Label(label="Geri Sayım:")
+            self.count_down_value = 19
 
             self.kutu = Gtk.VBox(spacing=10)
             self.kutu.pack_start(self.etiket_resim, True, True, 0)
             self.kutu.pack_start(self.yukleme_cubugu, False, False, 0)
-            self.kutu.pack_start(self.geri_sayim_etiket, False, False, 0)
+            self.kutu.pack_start(self.count_down_etiket, False, False, 0)
             self.vbox.pack_start(self.kutu, True, True, 0)
 
-            self.geri_sayim_thread = threading.Thread(target=self.geri_say)
-            self.geri_sayim_thread.start()
+            self.count_down_thread = threading.Thread(target=self.count_down)
+            self.count_down_thread.start()
 
         thread = threading.Thread(target=self.netkontrol)
         thread.start()
         # 1 dakikada bir interneti kontrol et
 
     def autoex(self):
-        # 20 dakika boyunca giriş yapılmamış ise cihaz kapatılır.
-        time.sleep(20*60)
-        if self.stpt:
-            if self.control() != None:
-                # uygulama halen çalışıyorsa
+        # 20 dakika (1200 saniye) sonra cihazı kapat
+        GLib.timeout_add_seconds(20 * 60, self.check_and_poweroff)
 
-                os.system("systemctl poweroff")
+    def check_and_poweroff(self):
+        if self.stpt and self.control() is not None:
+            # Uygulama halen çalışıyorsa cihazı kapat
+            asutils.poweroff()
+        return False  # False dönerse callback tekrarlanmaz.
 
     def control(self):
         # uygulamanın çalışma durumu kontrol edilir
@@ -614,7 +576,7 @@ class FullScreenWebViewExample:
         if current_text + str(digit) == str(self.random_number_for_password):
             self.ext = True
             self.qrlog = True
-            self.window.destroy()
+            self.fext()
 
     def del_event(self, widget, entry, digit):
         # numpad de sil tuşu
@@ -625,63 +587,31 @@ class FullScreenWebViewExample:
         # Butona tıklandığında eba qr'ı yenile
         self.webview.load_uri(self.ebaurl)
 
-    def on_webview_motion_notify(self, widget, event):
-        # Fare hareketini engelle
-        return True
-
-    def on_webview_touch_event(self, widget, event):
-        # Dokunmatik etkileşimleri engelle
-        return True
-
-    def on_webview_button_press(self, widget, event):
-        # Web görünümünde tıklama olayını engelle
-        return True
-
-    def on_webview_scroll(self, widget, event):
-        # Web görünümünde kaydırma olayını engelle
-        return True
-
     def validate_password(self, entry):
         # Şifrenin sadece sayılardan oluşmasını sağla
         text = entry.get_text()
         entry.set_text(''.join(char for char in text if char.isdigit()))
 
-    def generate_qr_code(self, number):
-        # Verilen sayıdan QR kodunu oluştur
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
-        )
-        qr.add_data(str(number))
-        qr.make(fit=True)
-
-        img_path = "/tmp/qrcode.png"
-        img = qr.make_image(fill_color="black", back_color="white")
-        img.save(img_path)
-
-        return img_path
-
 
 if __name__ == "__main__":
     try:
         try:
-            with open(".sr", "r") as dosya:
-                r = dosya.read()
-                dosya.close()
+            with open(".sr", "r") as file:
+                r = file.read()
+                file.close()
         except:
             r = ""
         # daha önce uyarılmamışsa uyarı gösterir
         if r == "":
-            with open(".sr", "w") as dosya:
-                dosya.write("sh")
-                dosya.close()
-            import getTouch
+            with open(".sr", "w") as file:
+                file.write("sh")
+                file.close()
+            
             # kurulum için gerekli kodu gösterir
-            result = messagebox.askokcancel(
-                "Uyarı", f"25 Dakika boyunca dokunma olmazsa otomatik olarak tahtayı kilitlemenin çalışması için sudo chmod a+r {getTouch.getPath()} komutunu uçbirimde çalıştırıp tahtayı yeniden başlatınız.Bunu yapmazsanız tahta 45 dakikada bir kilitlenir.")
+            if(getTouch.getPath()):
+                MessageBox.askokcancel(
+                    "Uyarı", f"25 Dakika boyunca dokunma olmazsa otomatik olarak tahtayı kilitlemenin çalışması için\nsudo chmod a+r {getTouch.getPath()}\n komutunu uçbirimde çalıştırıp tahtayı yeniden başlatınız.\nBunu yapmazsanız tahta 45 dakikada bir otomatik olarak kilitlenir.")
     except:
         print("possible-err")
-    app = FullScreenWebViewExample()
+    app = ASKilit()
     Gtk.main()

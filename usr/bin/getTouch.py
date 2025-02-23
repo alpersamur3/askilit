@@ -1,18 +1,12 @@
-import time
-import subprocess
-import subprocess
 import os
-import random
-import threading
 import sys
 
 
 def getTid():
-    # xinput komutunu çalıştır
+    # xinput komutunu çalıştır ve çıktıyı al
     try:
-        xinput_output = subprocess.check_output(
-            "xinput list", shell=True, stderr=subprocess.STDOUT, text=True)
-    except subprocess.CalledProcessError as e:
+        xinput_output = os.popen("xinput list").read()
+    except Exception as e:
         print("Hata oluştu:", e)
         return None
 
@@ -37,9 +31,9 @@ def getPath():
     device_id = getTid()
     if device_id is not None:
         try:
-            xinput_props_output = subprocess.check_output(
-                f"xinput list-props {device_id}", shell=True, stderr=subprocess.STDOUT, text=True)
-        except subprocess.CalledProcessError as e:
+            # xinput list-props komutunu çalıştır ve çıktıyı al
+            xinput_props_output = os.popen(f"xinput list-props {device_id}").read()
+        except Exception as e:
             print("Hata oluştu:", e)
             return None
 
@@ -54,7 +48,6 @@ def getPath():
                     device_path = device_path.replace('"', '')
                     if device_path is not None:
                         return device_path
-
                     else:
                         return None
 

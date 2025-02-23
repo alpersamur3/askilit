@@ -1,12 +1,13 @@
+#!/usr/bin/env python3
+
 from evdev import InputDevice, categorize, ecodes
 import time
-import subprocess
-import subprocess
 import os
 import random
 import threading
 import sys
 import getTouch
+import start_lock
 ex = True
 started = False
 
@@ -37,7 +38,7 @@ def ct():
             if tim == 0:
                 global myid
                 if clock() == myid:
-                    subprocess.Popen(["python3", "/usr/bin/askilit"])
+                    start_lock.startlock()
                     global started
                     started = True
                     break
@@ -78,8 +79,7 @@ def detect_touch_events(device_path):
         time.sleep(45 * 60)
         if clock() == myid:
             # Ana betiği başlatın
-            subprocess.Popen(["python3", "/usr/bin/askilit"])
-
+            start_lock.startlock()
 
 myid = clock()
 # Touch cihazının ID'sini al
@@ -91,4 +91,4 @@ if myid != None:
         time.sleep(45 * 60)
         if clock() == myid:
             # Ana betiği başlatın
-            subprocess.Popen(["python3", "/usr/bin/askilit"])
+            start_lock.startlock()

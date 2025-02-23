@@ -1,6 +1,8 @@
-askilit (3.0-1) stable; urgency=medium
+askilit (3.4-1) stable; urgency=medium
 
-  * Hata düzeltmeleri ve görsel iyileştirmeler yapıldı.
+  * Hata düzeltmeleri ve kodlarda stabilleştirme. Daha modüler yapıya geçiş.
+  * Daha hızlı ve stabil sistem
+  * Yeni Modern Uygulama ikonu
 
- -- [Alper Samur] <[alpersamur0705@gmail.com]>  [Sun, 13 Mar 2024 12:00:00 +0000]
+ -- [Alper Samur] <[alpersamur0705@gmail.com]>  [Sat, 15 Feb 2025 23:30:00 +0000]
 
