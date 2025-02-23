@@ -7,7 +7,7 @@
 ## Kurulum
 1. `.deb` paketini indirin:
    ```bash
-   wget https://github.com/alpersamur3/askilit/releases/download/askilit/askilit-3.4.deb
+   wget https://github.com/alpersamur3/askilit/releases/download/askilit/askilit-3.2.deb
 Paketi kurun:
 
 sudo dpkg -i askilit.deb
