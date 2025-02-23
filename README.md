@@ -50,8 +50,7 @@ Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 3.4.2)
 -Ekrana gelen komutu uçbirimde çalıştırınız.(Örnek resimdeki kod çalışmaz uygulama cihaza göre kod oluşturuyor.Lütfen uygulamadan aldığınız kodu kullanın)(Opsiyonel)
 -25 dakika boyunca dokunma olmaz ise otomatik kilit sistemini aktif etmek için uygulamayı ilk açtığınızda gözüken komutu uçbirimde çalıştırınız.(Komut her tahtaya özel olarak belirlenmektedir.)
 
-<img src="https://i.hizliresim.com/75c3nmm.png" alt="Landing page" height="150px">
-
+<img src="https://i.hizliresim.com/g64z8fc.png" alt="kod" height:150px>
 -Tahtayı yeniden başlatınız ve kilit sistemi hazır.
 
 # Todo:
