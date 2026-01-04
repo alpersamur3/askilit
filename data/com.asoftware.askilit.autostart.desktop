@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=ASKilit Autostart
+Name[tr]=ASKilit Otomatik Başlat
+Comment=Automatically start ASKilit screen lock
+Comment[tr]=ASKilit ekran kilidini otomatik başlat
+Exec=askilit st
+Icon=com.asoftware.askilit
+Terminal=false
+Type=Application
+Categories=Utility;
+NoDisplay=true
+X-GNOME-Autostart-enabled=true

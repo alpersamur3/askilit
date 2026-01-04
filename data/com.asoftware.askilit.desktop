@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=ASKilit
+Name[tr]=ASKilit
+Comment=Screen Lock Application for Interactive Boards
+Comment[tr]=Etkileşimli Tahtalar için Ekran Kilidi
+GenericName=Screen Lock
+GenericName[tr]=Ekran Kilidi
+Exec=askilit
+Icon=com.asoftware.askilit
+Terminal=false
+Type=Application
+Categories=Utility;Security;
+Keywords=lock;screen;eba;teacher;student;
+StartupNotify=true

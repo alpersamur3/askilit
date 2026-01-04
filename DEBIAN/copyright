@@ -1,24 +1,25 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: askilit
+Upstream-Contact: Alper Samur <alpersamur0705@gmail.com>
 Source: https://github.com/alpersamur3/askilit
 
-
 Files: *
-Copyright: 2025 Alper Samur
-License: GPL-3.0+
+Copyright: 2024 Alper Samur <alpersamur0705@gmail.com>
+License: GPL-3+
 
-License: GPL-3.0+
- GNU Genel Kamu Lisansı (GPL)
-
- Versiyon 3.4(Tüm Sürümlerde Geçerlidir), 23 Şubat 2025
-
- Telif Hakkı © 2025 Alper Samur
-
- Bu programın kapsamı GNU Genel Kamu Lisansı ("Lisans") altındadır ve aşağıdaki koşullar altında dağıtılabilir ve/veya değiştirilebilir:
-
- 1. Bu programın herhangi bir kısmının kaynak kodunu elde etme hakkına sahipsiniz ve istediğiniz gibi değiştirebilirsiniz.
- 2. Programı değiştirdiğinizde, değişikliklerinizi açıkça belirtmek zorundasınız. Açıkça belirtme, değişikliklerinizi kaynak kodunun içine veya bir metin dosyasına ekleyerek yapabilirsiniz. Eğer bu mümkün değilse, değişikliklerinizin nereden yapıldığını belirtmek zorundasınız.
- 3. Bu programı, değiştirilmiş veya değiştirilmemiş olarak dağıtabilirsiniz. Ancak, değiştirilmiş bir versiyonunu dağıtıyorsanız, dağıtımınız GNU Genel Kamu Lisansı altında olmalıdır ve alıcıya orijinal Lisans'ı sağlamanız gerekmektedir.
- 4. Bu programın kullanımı herhangi bir garanti olmaksızın sağlanır. Herhangi bir sorumluluk kabul etmiyoruz. Programı istediğiniz gibi kullanabilirsiniz.
- 5. Bu programın düzenlenmiş veya düzenlenmemiş herhangi bir kısmının ticari amaçla dağıtılması, paylaşılması veya düzenlenmesi kesinlikle yasaktır. Ticari amaç, bu programın doğrudan kar elde etmek veya ticari hizmetler sunmak amacıyla kullanılmasını içerir. Bu sınırlama, orijinal telif hakkı sahibi Alper Samur dışında hiçbir kişinin ticari amaçlarla kullanımına izin vermez.
-
+License: GPL-3+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ .
+ On Debian systems, the complete text of the GNU General Public License
+ version 3 can be found in `/usr/share/common-licenses/GPL-3'.

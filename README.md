@@ -1,67 +1,203 @@
-# ASKilit
-Bu uygulama öğrencilerin tahtayı kurcalamasını engellemek içindir.
+# ASKilit - Screen Lock Application for Interactive Boards
 
-Etap 19 da çalışır durumda.Etap 5.3’te test ettim ama python(python 3.4.2) ve pip sürümünün çok eski olmasından dolayı çalışmadı.(Çalışan bir sürüm ayarlamaya çalışıyorum ama olumlu bir sonuç çıkacak gibi gözükmüyor.5.3’te Ebaqr çalışsa bile normal qr çalışmıyor.)
+<p align="center">
+  <img src="data/icons/com.asoftware.askilit.svg" alt="ASKilit Logo" width="128" height="128">
+</p>
 
-# ASkilit-3.0 Yayınlandı :)
--Görüntü iyileştirmeleri
+<p align="center">
+  <strong>Etkileşimli eğitim tahtaları için ekran kilidi uygulaması</strong>
+</p>
 
--Kod düzenlenmesi,yorum satırları ve pep-8 kurallarına uyum.
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#building">Building</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#license">License</a>
+</p>
 
-# İşte Tüm Özellikleri:
--İnternet var iken ebaqr aktif olur.
+---
 
--Öğretmen hesabı ile Ebaqr okutulduğunda kilit açılır.
+## 🎯 About / Hakkında
 
--45 dakika sonra otomatik olarak tekrar kilitlenir.(Destekleyen cihazlar için 25 dakika boyunca dokunma olmaz ise otomatik kilitleme sistemi)
+ASKilit, etkileşimli eğitim tahtaları için tasarlanmış bir ekran kilidi uygulamasıdır. Öğrencilerin öğretmen izni olmadan tahtayı kullanmasını engeller.
 
--Kilit ekranı açık iken 20 dakika boyunca giriş yapılmazsa tahta otomatik olarak kapanır.
+ASKilit is a screen lock application designed for interactive educational boards. It prevents students from using the board without teacher authorization.
 
--İnternet yok ise normal qr devreye girer okutunca şifre çıkar ve o şifre girilerek kilit açılır.
+## ✨ Features / Özellikler
 
--Eğer kilit normal qr ile açıldıysa 30 saniyede bir internet kontrolü başlatılır ve internet geldiğinde kilit tekrar devreye girer(ebaqr gösterilir)(Öğrenciler internet kablosunu çekip tahtayı açmayı denerse diye bu sistem eklendi.)
+| Feature | Description |
+|---------|-------------|
+| 🔐 **EBA QR Login** | Teachers can unlock using EBA QR code login |
+| 📱 **Offline QR** | Fallback QR code when internet is not available |
+| ⏱️ **Auto-lock** | Automatic screen lock after 25 minutes of inactivity |
+| 👆 **Touch Detection** | Monitors touch screen for activity |
+| 🌍 **Multi-language** | Turkish and English support with gettext |
+| 🔄 **Auto-restart** | Restarts when network becomes available |
 
--Hiçbir şekilde kapatılamaz kapatılırsa anında tekrar açılır ve alta alınamaz.(Bir şekilde alta alınsa bile herhangi bir uygulama açılırsa kilit en üste çıkar)
+## 📁 Project Structure / Proje Yapısı
 
--1 dakikada bir internet bağlantısı kontrol edilir ve ona göre ebaqr ya da normal qr gösterilir.
+```
+askilit/
+├── meson.build              # Main build configuration
+├── src/                     # Source code
+│   ├── application.py       # GTK Application class
+│   ├── window.py            # Main lock window
+│   ├── utils.py             # Utility functions
+│   ├── network.py           # Network checking
+│   ├── qrcode_generator.py  # QR code generation
+│   ├── touch_handler.py     # Touch screen handling
+│   ├── dialogs.py           # Dialog windows
+│   ├── autolock.py          # Auto-lock module
+│   ├── constants.py         # Configuration constants
+│   └── i18n.py              # Internationalization
+├── bin/                     # Launcher scripts
+├── data/                    # Desktop files, icons, images
+├── po/                      # Translations (tr, en)
+└── debian/                  # Debian packaging
+```
 
--Kilit uygulaması zaten açıksa tekrar açılamaz.
+## 📦 Installation / Kurulum
 
--Açılışta otomatik olarak başlatılır.
+### From .deb Package / Paketten Kurulum
 
--Masaüstündeki simge ile kilit başlatılabilir.
+```bash
+# Download the latest release
+sudo dpkg -i askilit_4.0-1_all.deb
 
--Bir şekilde pencere boyutu küçültülürse otomatik olarak uygulama yeniden başlatılır ve tam ekran olur.
+# Install missing dependencies if any
+sudo apt-get install -f
+```
 
--v2.0 sürümü ile tahta açılışta EbaQr yükleniyor yazısı göstererek 20 saniyelik bir bekleme yapar.Böylece interneti geç algılayan tahtalarda internet bu süre içinde algılanır.
+### Dependencies / Bağımlılıklar
 
--v2.0 sürümü ile internet gidip geldiğinde uygulama kapanıp açılmaz direkt olarak normal qr ve ebaqr arasında geçiş yapılır.
+```bash
+sudo apt install python3 python3-gi python3-gi-cairo \
+    gir1.2-gtk-3.0 gir1.2-webkit2-4.1 \
+    python3-qrcode python3-evdev python3-requests xinput
+```
 
--v2.0 sürümü ile kararlılık arttırıldı ve iyileştirmeler,hata gidermeler yapıldı.
+## 🔧 Building / Derleme
 
-# Kurulum:
+### Prerequisites / Gereksinimler
 
--pip3 kurulu değil ise(etaplarda genelde kurulu olmaz.) pkexec apt install python3-pip komutunu uçbirimde çalıştırınız.
+```bash
+# Debian/Ubuntu/Pardus
+sudo apt install meson ninja-build python3 python3-gi \
+    python3-gi-cairo gir1.2-gtk-3.0 gir1.2-webkit2-4.1 \
+    python3-qrcode python3-evdev python3-requests xinput gettext
+```
 
--Debian uzantılı paket dosyasını kurulumu başlatınız.
+### Build from Source / Kaynaktan Derleme
 
--Cihazı yeniden başlatınız.
+```bash
+# Clone the repository
+git clone https://github.com/alpersamur3/askilit.git
+cd askilit
 
--Ekrana gelen komutu uçbirimde çalıştırınız.(Örnek resimdeki kod çalışmaz uygulama cihaza göre kod oluşturuyor.Lütfen uygulamadan aldığınız kodu kullanın)(Opsiyonel)
--25 dakika boyunca dokunma olmaz ise otomatik kilit sistemini aktif etmek için uygulamayı ilk açtığınızda gözüken komutu uçbirimde çalıştırınız.(Komut her tahtaya özel olarak belirlenmektedir.)
+# Configure
+meson setup build --prefix=/usr
 
-![75c3nmm](https://github.com/user-attachments/assets/d415a5d8-cdf6-45cc-94ac-98c926cd720c)
+# Build
+ninja -C build
 
+# Install (requires root)
+sudo ninja -C build install
+```
 
--Tahtayı yeniden başlatınız ve kilit sistemi hazır.
+### Build Debian Package / Debian Paketi Oluşturma
 
-# Todo:
+```bash
+# Install build dependencies
+sudo apt install debhelper dh-python meson ninja-build
 
--İnternet yokken ki gelen qr koda daha iyi bir çözüm bulmak(Öğrencilerin açamaması için)(geçici olarak daha iyi bir çözüm bulundu.)
+# Build the package
+dpkg-buildpackage -us -uc -b
 
-# Görseller:
+# The .deb file will be in the parent directory
+```
 
-![mfhkzd8](https://github.com/user-attachments/assets/5dba6089-628d-49d3-b008-3f6f89f3fb7b)
-![d90jzca](https://github.com/user-attachments/assets/791e286a-18ff-430f-b766-e4bb916eb535)
-![oq1xhpf](https://github.com/user-attachments/assets/fc508eb3-0a83-434a-b28f-d6d8e465dc42)
-![dy1n9eu](https://github.com/user-attachments/assets/4becda0e-125f-43cf-9f9a-13b2f47c95a8)
+## 🚀 Usage / Kullanım
+
+The application starts automatically on login via the autostart desktop file.
+
+### Manual Start / Manuel Başlatma
+
+```bash
+askilit        # Normal start
+askilit st     # Autostart mode (with loading countdown)
+```
+
+### Touch Permission Setup / Dokunmatik Ekran İzin Ayarı
+
+For the 25-minute inactivity timer to work properly:
+
+```bash
+# Find your touch device
+xinput list | grep -i touch
+
+# Enable read permission (replace X with your device number)
+sudo chmod a+r /dev/input/eventX
+```
+
+Without this setup, the device will lock every 45 minutes instead of 25 minutes of inactivity.
+
+## 🔓 Unlocking / Kilidi Açma
+
+### With Internet / İnternet Varken
+1. EBA QR code appears on screen
+2. Teacher scans with EBA mobile app
+3. Login with teacher account (roles: 2, 300, 301)
+4. Screen unlocks automatically
+
+### Without Internet / İnternet Yokken
+1. Random QR code with 6-digit number appears
+2. Scan QR code with any QR reader
+3. Enter the 6-digit code using numpad
+4. Screen unlocks
+
+## 🌐 Translations / Çeviriler
+
+To update translations:
+
+```bash
+./update-translations.sh
+```
+
+To add a new language:
+1. Add language code to `po/LINGUAS`
+2. Run `./update-translations.sh`
+3. Edit the new `.po` file
+
+## 📋 Changelog
+
+### v4.0 (2026-01-05)
+- Major refactoring with Meson build system
+- Complete code restructuring with proper hierarchy
+- All code converted to English with gettext i18n
+- Fixed gi.require_version for GTK/WebKit
+- Added WebKit2 4.0/4.1 compatibility
+- Replaced os.system with subprocess.run
+
+### v3.4
+- Initial public release
+
+## 📄 License / Lisans
+
+This project is licensed under the **GNU General Public License v3.0** - see the [LICENSE](LICENSE) file for details.
+
+## 👤 Author / Yazar
+
+**Alper Samur**
+- 📧 Email: alpersamur0705@gmail.com
+- 🐙 GitHub: [@alpersamur3](https://github.com/alpersamur3)
+
+## 🙏 Acknowledgments / Teşekkürler
+
+- Bayram Karahan öğretmenime, bu projeye ilham verdiği için teşekkürler.
+
+---
+
+<p align="center">
+  Made with ❤️ for Turkish Education
+</p>

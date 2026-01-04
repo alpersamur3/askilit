@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a90d9"/>
+      <stop offset="100%" style="stop-color:#2c5aa0"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect x="8" y="8" width="112" height="112" rx="16" ry="16" fill="url(#bgGrad)"/>
+  
+  <!-- Lock body -->
+  <rect x="36" y="56" width="56" height="48" rx="6" ry="6" fill="#ffffff"/>
+  
+  <!-- Lock shackle -->
+  <path d="M44 56 V40 C44 28 52 20 64 20 C76 20 84 28 84 40 V56" 
+        fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Keyhole -->
+  <circle cx="64" cy="76" r="8" fill="#2c5aa0"/>
+  <rect x="60" y="76" width="8" height="16" fill="#2c5aa0"/>
+  
+  <!-- AS text -->
+  <text x="64" y="118" font-family="Arial, sans-serif" font-size="14" font-weight="bold" 
+        fill="#ffffff" text-anchor="middle">ASKilit</text>
+</svg>

@@ -1,0 +1,57 @@
+# ASKilit Translation Template
+# Copyright (C) 2024 Alper Samur
+# This file is distributed under the same license as the askilit package.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: askilit 3.5\n"
+"Report-Msgid-Bugs-To: alpersamur0705@gmail.com\n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/window.py
+msgid "Developed by\nAlper Samur\n(alpersamur0705@gmail.com)"
+msgstr ""
+
+#: src/window.py
+msgid "About"
+msgstr ""
+
+#: src/window.py
+msgid "Shutdown"
+msgstr ""
+
+#: src/window.py
+msgid "Restart"
+msgstr ""
+
+#: src/window.py
+msgid "Refresh EBA QR"
+msgstr ""
+
+#: src/window.py
+msgid "Password:"
+msgstr ""
+
+#: src/window.py
+msgid "Countdown:"
+msgstr ""
+
+#: src/window.py
+msgid "Countdown: {}"
+msgstr ""
+
+#: src/dialogs.py
+msgid "For automatic lock after 25 minutes of no touch, run this command:\n\nsudo chmod a+r {device_path}\n\nThen restart the device.\nWithout this, the device will lock automatically every 45 minutes."
+msgstr ""
+
+#: src/dialogs.py
+msgid "Setup Required"
+msgstr ""
