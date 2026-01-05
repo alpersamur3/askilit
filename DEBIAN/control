@@ -1,0 +1,39 @@
+Source: askilit
+Section: utils
+Priority: optional
+Maintainer: Alper Samur <alpersamur0705@gmail.com>
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               meson (>= 0.59.0),
+               ninja-build,
+               python3,
+               python3-gi,
+               gettext
+Standards-Version: 4.6.0
+Homepage: https://github.com/alpersamur3/askilit
+Vcs-Git: https://github.com/alpersamur3/askilit.git
+Rules-Requires-Root: no
+
+Package: askilit
+Architecture: all
+Depends: ${misc:Depends},
+         ${python3:Depends},
+         python3 (>= 3.7),
+         python3-gi,
+         python3-gi-cairo,
+         gir1.2-gtk-3.0,
+         gir1.2-webkit2-4.0 | gir1.2-webkit2-4.1,
+         python3-qrcode,
+         python3-evdev,
+         python3-requests,
+         xinput
+Description: Screen Lock Application for Interactive Boards
+ ASKilit is a screen lock application designed for interactive
+ educational boards. It prevents students from using the board
+ without teacher authorization.
+ .
+ Features:
+  - EBA QR code login for teachers
+  - Offline QR code login fallback
+  - Automatic screen lock after inactivity
+  - Touch detection for activity monitoring
