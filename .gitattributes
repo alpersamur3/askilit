@@ -1,0 +1,5 @@
+debian/postinst text eol=lf
+debian/postrm text eol=lf
+debian/preinst text eol=lf
+debian/prerm text eol=lf
+*.sh text eol=lf

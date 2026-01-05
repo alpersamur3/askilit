@@ -29,3 +29,10 @@ install_data(
     'com.asoftware.askilit.autostart.desktop',
     install_dir: autostartdir
 )
+
+# Install udev rules for touch screen permission
+udevdir = '/etc/udev/rules.d'
+install_data(
+    '99-askilit-touch.rules',
+    install_dir: udevdir
+)

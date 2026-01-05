@@ -1,0 +1,10 @@
+# ASKilit - Touch screen permission for autolock
+# This rule grants read permission to touch devices so autolock can detect inactivity
+
+# Match touch screen devices and make them world-readable
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="*[Tt]ouch*", MODE="0644"
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="*[Tt]ouchscreen*", MODE="0644"
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="*[Tt]ouch [Ss]creen*", MODE="0644"
+
+# Some devices use different naming
+SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT_TOUCHSCREEN}=="1", MODE="0644"

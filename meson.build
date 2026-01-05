@@ -1,6 +1,6 @@
 project(
     'askilit',
-    version: '4.1',
+    version: '4.2',
     license: 'GPL-3.0',
     meson_version: '>= 0.59.0'
 )

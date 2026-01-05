@@ -142,6 +142,36 @@ sudo chmod a+r /dev/input/eventX
 
 Without this setup, the device will lock every 45 minutes instead of 25 minutes of inactivity.
 
+## ⚙️ Configuration / Yapılandırma
+
+All timing and configuration values can be customized by editing:
+
+**`/usr/share/askilit/constants.py`** (after installation)
+
+or
+
+**`src/constants.py`** (before building)
+
+### Available Settings / Mevcut Ayarlar
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `AUTOLOCK_TIMEOUT` | 25 min | Lock after inactivity (with touch device) |
+| `AUTOLOCK_FALLBACK_TIMEOUT` | 45 min | Lock after inactivity (without touch device) |
+| `AUTO_POWEROFF_TIMEOUT` | 20 min | Auto shutdown if lock screen not unlocked |
+| `NETWORK_CHECK_INTERVAL` | 60 sec | How often to check network status |
+| `STARTUP_NETWORK_CHECK_INTERVAL` | 20 sec | Network check interval at startup |
+
+### Example / Örnek
+
+```python
+# Change autolock to 30 minutes
+AUTOLOCK_TIMEOUT = 30 * 60  # 30 minutes in seconds
+
+# Disable auto poweroff (set very high)
+AUTO_POWEROFF_TIMEOUT = 24 * 60 * 60  # 24 hours
+```
+
 ## 🔓 Unlocking / Kilidi Açma
 
 ### With Internet / İnternet Varken
@@ -170,6 +200,13 @@ To add a new language:
 3. Edit the new `.po` file
 
 ## 📋 Changelog
+
+### v4.2 (2026-01-05)
+- Fix QR codes showing together on desktop startup
+- Add loading screen for normal startup mode
+- Fix UI blocking during network check
+- Add udev rules for automatic touch permission
+- Add Configuration section to README
 
 ### v4.0 (2026-01-05)
 - Major refactoring with Meson build system
