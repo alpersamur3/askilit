@@ -1,3 +1,13 @@
+askilit (4.2-1) unstable; urgency=medium
+
+  * Fix QR codes showing together on desktop startup
+  * Add loading screen for normal startup mode
+  * Fix UI blocking during network check
+  * Add udev rules for automatic touch permission
+  * Add Configuration section to README
+
+ -- Alper Samur <alpersamur0705@gmail.com>  Sun, 05 Jan 2026 14:00:00 +0300
+
 askilit (4.1-1) unstable; urgency=medium
 
   * Project structure cleanup

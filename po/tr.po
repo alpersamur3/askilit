@@ -49,9 +49,13 @@ msgid "Countdown: {}"
 msgstr "Geri Sayım: {}"
 
 #: src/dialogs.py
-msgid "For automatic lock after 25 minutes of no touch, run this command:\n\nsudo chmod a+r {device_path}\n\nThen restart the device.\nWithout this, the device will lock automatically every 45 minutes."
-msgstr "25 dakika boyunca dokunma olmazsa otomatik olarak tahtayı kilitlemenin çalışması için:\n\nsudo chmod a+r {device_path}\n\nkomutunu uçbirimde çalıştırıp tahtayı yeniden başlatınız.\nBunu yapmazsanız tahta 45 dakikada bir otomatik olarak kilitlenir."
+msgid "Touch screen detected: {device_path}\n\nAutomatic lock after 25 minutes of inactivity is enabled.\n\nIf touch detection doesn't work, restart the device once."
+msgstr "Dokunmatik ekran algılandı: {device_path}\n\n25 dakika hareketsizlik sonrası otomatik kilit etkinleştirildi.\n\nDokunma algılama çalışmazsa cihazı bir kez yeniden başlatın."
 
 #: src/dialogs.py
-msgid "Setup Required"
-msgstr "Kurulum Gerekli"
+msgid "Touch Screen Ready"
+msgstr "Dokunmatik Ekran Hazır"
+
+#: src/window.py
+msgid "Checking network..."
+msgstr "Ağ kontrol ediliyor..."

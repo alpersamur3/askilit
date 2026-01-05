@@ -93,6 +93,22 @@ class LockWindow(Gtk.ApplicationWindow):
         # Show window
         self.show_all()
         self._toggle_info(None)  # Hide info by default
+        
+        # Hide all views first, then show only loading screen
+        self.network_box.hide()
+        self.qr_box.hide()
+        self.loading_box.show()
+        
+        # Start loading process based on startup mode
+        if self.startup_mode == "st":
+            # Autostart mode: countdown then check network
+            # Start background network check
+            threading.Thread(target=self._background_network_check, daemon=True).start()
+            GLib.timeout_add_seconds(1, self._countdown_tick)
+        else:
+            # Normal mode: check network immediately with pulse animation
+            self._start_pulse_animation()
+            threading.Thread(target=self._quick_network_check, daemon=True).start()
     
     def _check_single_instance(self):
         """
@@ -255,9 +271,8 @@ class LockWindow(Gtk.ApplicationWindow):
         # Create QR login screen
         self._create_qr_login()
         
-        # Create startup loading screen
-        if self.startup_mode == "st":
-            self._create_loading_screen()
+        # Create startup loading screen (for both modes)
+        self._create_loading_screen()
         
         # Start network checking
         threading.Thread(target=self._start_network_check, daemon=True).start()
@@ -369,8 +384,8 @@ class LockWindow(Gtk.ApplicationWindow):
     
     def _on_eba_load_changed(self, webview, event):
         """Handle EBA webview load events."""
+        # During startup loading, ignore EBA events (it loads in background)
         if self.eba_startup:
-            GLib.timeout_add(200, self._hide_all_views)
             return
         
         link = webview.get_uri()
@@ -538,31 +553,68 @@ class LockWindow(Gtk.ApplicationWindow):
         self.progress_bar.set_pulse_step(0.1)
         self.loading_box.pack_start(self.progress_bar, False, False, 0)
         
-        # Countdown label
-        self.countdown_label = Gtk.Label(label=_("Countdown:"))
+        # Status label
+        self.countdown_label = Gtk.Label(label=_("Checking network..."))
         self.loading_box.pack_start(self.countdown_label, False, False, 0)
         
         self.main_box.pack_start(self.loading_box, True, True, 0)
         
-        # Start countdown
-        self._hide_all_views()
+        # Mark as loading
         self.eba_startup = True
-        threading.Thread(target=self._run_countdown, daemon=True).start()
+        self.network_available = False  # Track if network becomes available during countdown
     
-    def _run_countdown(self):
-        """Run the startup countdown."""
-        GLib.timeout_add(300, self._hide_all_views)
-        GLib.timeout_add_seconds(1, self._countdown_tick)
+    def _start_pulse_animation(self):
+        """Start progress bar pulse animation."""
+        def pulse():
+            if self.eba_startup:
+                self.progress_bar.pulse()
+                return True
+            return False
+        GLib.timeout_add(100, pulse)
+    
+    def _quick_network_check(self):
+        """Quick network check for normal startup mode."""
+        is_online = network.is_online()
+        GLib.idle_add(lambda: self._finish_quick_loading(is_online))
+    
+    def _background_network_check(self):
+        """Background network check during countdown (st mode)."""
+        while self.eba_startup and self.countdown_value > 0:
+            if network.is_online():
+                self.network_available = True
+                logger.debug("Network available during countdown")
+                GLib.idle_add(self._finish_loading)
+                return
+            # Short sleep before next check
+            import time
+            time.sleep(2)
+    
+    def _finish_quick_loading(self, is_online):
+        """Finish quick loading and show appropriate view."""
+        self.loading_box.hide()
+        self.eba_startup = False
+        
+        if is_online:
+            self._show_web_mode()
+            self.network_status = False
+        else:
+            self._show_qr_mode()
+            self.network_status = True
+        return False
     
     def _countdown_tick(self):
         """Handle countdown tick."""
+        # If network became available in background, stop countdown
+        if self.network_available:
+            return False
+        
         if self.countdown_value > 0:
-            GObject.idle_add(self._update_countdown_ui)
+            self._update_countdown_ui()
             self.countdown_value -= 1
             return True  # Continue timer
         else:
-            # Countdown finished
-            GObject.idle_add(self._finish_loading)
+            # Countdown finished, show QR mode (no internet)
+            self._finish_loading()
             return False
     
     def _update_countdown_ui(self):
@@ -590,6 +642,13 @@ class LockWindow(Gtk.ApplicationWindow):
     def _check_network(self):
         """Check network status and update UI accordingly."""
         if not self.network_check_running:
+            return False
+        
+        # Don't interfere during startup loading (st mode)
+        if self.eba_startup:
+            # Schedule next check after startup completes
+            if self.network_check_running:
+                GLib.timeout_add_seconds(self.network_check_interval, self._check_network)
             return False
         
         is_online = network.is_online()
@@ -630,19 +689,22 @@ class LockWindow(Gtk.ApplicationWindow):
         """Show EBA web login mode."""
         self._hide_all_views()
         
-        # Check for ads
-        try:
-            res = requests.get(CONTROL_URL, timeout=5)
-            if res.status_code == 200:
-                self.ad_view.load_uri(ADS_URL)
-        except Exception as e:
-            logger.debug(f"Ad check failed: {e}")
-            self.ad_view.hide()
-        
-        self.eba_view.load_uri(EBA_LOGIN_URL)
-        self.qr_box.hide()
+        # Show network box first, then check ads in background
         self.network_box.show()
+        self.eba_view.load_uri(EBA_LOGIN_URL)
         logger.debug("Switched to web mode")
+        
+        # Check for ads in background thread
+        def check_ads():
+            try:
+                res = requests.get(CONTROL_URL, timeout=5)
+                if res.status_code == 200:
+                    GLib.idle_add(lambda: self.ad_view.load_uri(ADS_URL) or False)
+            except Exception as e:
+                logger.debug(f"Ad check failed: {e}")
+                GLib.idle_add(lambda: self.ad_view.hide() or False)
+        
+        threading.Thread(target=check_ads, daemon=True).start()
         return False
     
     def _show_qr_mode(self):
@@ -660,6 +722,7 @@ class LockWindow(Gtk.ApplicationWindow):
         """Hide all login views."""
         self.network_box.hide()
         self.qr_box.hide()
+        self.loading_box.hide()
         logger.debug("All views hidden")
         return False
     

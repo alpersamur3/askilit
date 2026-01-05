@@ -104,17 +104,16 @@ def show_warning_dialog(parent, title, message):
 
 def show_touch_permission_dialog(parent, device_path):
     """
-    Show dialog about touch device permission setup.
+    Show dialog about touch device detection.
     
     Args:
         parent: Parent window (can be None)
         device_path: Path to the touch device
     """
     message = _(
-        "For automatic lock after 25 minutes of no touch, run this command:\n\n"
-        "sudo chmod a+r {device_path}\n\n"
-        "Then restart the device.\n"
-        "Without this, the device will lock automatically every 45 minutes."
+        "Touch screen detected: {device_path}\n\n"
+        "Automatic lock after 25 minutes of inactivity is enabled.\n\n"
+        "If touch detection doesn't work, restart the device once."
     ).format(device_path=device_path)
     
-    show_info_dialog(parent, _("Setup Required"), message)
+    show_info_dialog(parent, _("Touch Screen Ready"), message)
