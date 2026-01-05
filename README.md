@@ -201,6 +201,9 @@ To add a new language:
 
 ## 📋 Changelog
 
+### v4.4 (2026-01-05)
+- Remove postinst script (udev rules load automatically on reboot)
+
 ### v4.3 (2026-01-05)
 - Fix loading screen disappearing during countdown
 - Add udev rules for automatic touch permission

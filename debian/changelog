@@ -1,3 +1,9 @@
+askilit (4.4-1) unstable; urgency=medium
+
+  * Remove postinst script (udev rules load on reboot)
+
+ -- Alper Samur <alpersamur0705@gmail.com>  Sun, 05 Jan 2026 15:30:00 +0300
+
 askilit (4.3-1) unstable; urgency=medium
 
   * Fix loading screen disappearing during countdown

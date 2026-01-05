@@ -11,7 +11,7 @@ import os
 # Application info
 APP_NAME = "askilit"
 APP_ID = "com.asoftware.askilit"
-VERSION = "4.3"
+VERSION = "4.4"
 
 # Paths
 LOCK_FILE = "/tmp/askilit.lock"
