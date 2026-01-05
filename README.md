@@ -201,6 +201,11 @@ To add a new language:
 
 ## 📋 Changelog
 
+### v4.3 (2026-01-05)
+- Fix loading screen disappearing during countdown
+- Add udev rules for automatic touch permission
+- Fix postinst script for debian package
+
 ### v4.2 (2026-01-05)
 - Fix QR codes showing together on desktop startup
 - Add loading screen for normal startup mode
